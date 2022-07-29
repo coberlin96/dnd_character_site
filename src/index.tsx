@@ -1,15 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { FirebaseAppProvider } from 'reactfire';
+import 'firebase/auth'
+import { firebaseConfig } from './firebaseConfig';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import { theme } from './Theme/themes'
+import './styles.css'
+import { Home, Dashboard } from './components';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+    <Provider store = {store}>
+      <ThemeProvider theme ={theme}>
+        <Router>
+          <Routes>
+            <Route path='/' element={< Home title = {'char.inventory'}/>}/>
+            <Route path='/dashboard' element={<Dashboard/>}/>
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    
+    </Provider>
+    </FirebaseAppProvider>
   </React.StrictMode>
 );
 
